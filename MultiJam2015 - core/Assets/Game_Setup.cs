@@ -16,7 +16,18 @@ public class Game_Setup : MonoBehaviour {
     private Player playerOne;
     private Player playerTwo;
 
+    //Color Definitions
+    private Color red = Color.red;
+    private Color green = Color.green;
+    private Color blue = Color.blue;
+    private Color yellow = Color.yellow;
+    private Color cyan = Color.cyan;
+    private Color inactive = new Color(Color.white.r, Color.white.g, Color.white.b, .25f);
+
+    private Color[] colors; 
+
 	void Start () {
+        colors = new Color[] { red, green, blue, yellow, cyan };
         camera = Camera.main;
 
         playerOne = GameObject.Find("PlayerOne").GetComponent<Player>();
@@ -68,6 +79,12 @@ public class Game_Setup : MonoBehaviour {
 	void Update () {
         if (playerOne.getCurrentTurn())
         {
+            for (int i = 0; i < 5; i++)
+            {
+                nodes[i, 0].GetComponent<SpriteRenderer>().color = inactive;
+            }
+            nodes[playerOne.getPosition(), 0].GetComponent<SpriteRenderer>().color = red;
+
             if (playerOne.getChosen())
             {
                 //Algorithm step 2
@@ -78,9 +95,22 @@ public class Game_Setup : MonoBehaviour {
                 playerOne.resetPlayer(); //6
                 playerOne.setTurn(false); //6
                 playerTwo.setTurn(true); //6
+                for (int i = 0; i < 5; i++)
+                {
+                    nodes[i, 0].GetComponent<SpriteRenderer>().color = inactive;
+                }
             }
-        } else if(playerTwo.getCurrentTurn())
+        } 
+        
+        else if(playerTwo.getCurrentTurn())
         {
+            for (int i = 0; i < 5; i++)
+            {
+                nodes[i, this.totalCells -1].GetComponent<SpriteRenderer>().color = inactive;
+            }
+
+            nodes[playerTwo.getPosition(), this.totalCells - 1].GetComponent<SpriteRenderer>().color = red;
+
             if (playerOne.getChosen())
             {
                 //Algorithm step 2
@@ -91,6 +121,11 @@ public class Game_Setup : MonoBehaviour {
                 playerTwo.resetPlayer(); //6
                 playerTwo.setTurn(false); //6
                 playerOne.setTurn(true); //6
+
+                for (int i = 0; i < 5; i++)
+                {
+                    nodes[i, this.totalCells - 1].GetComponent<SpriteRenderer>().color = inactive;
+                }
             }
         }
 	}

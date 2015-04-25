@@ -70,4 +70,9 @@ public class Player : MonoBehaviour {
     {
         return this.position;
     }
+
+    public void setColor(Color color)
+    {
+        this.color = color;
+    }
 }
