@@ -16,6 +16,8 @@ public class Game_Setup : MonoBehaviour {
     private Player playerOne;
     private Player playerTwo;
 
+    public static bool winnerOne = false;
+
     //Color Definitions
     public static Color red = Color.red;
     public static Color green = Color.green;
@@ -87,6 +89,8 @@ public class Game_Setup : MonoBehaviour {
 	}
 	
 	void Update () {
+
+        GameObject.Find("Score").GetComponent<TextMesh>().text = ("" + playerOne.getPoints() + " | " + playerTwo.getPoints());
 
         if (playerOne.getCurrentTurn())
         {
@@ -170,6 +174,8 @@ public class Game_Setup : MonoBehaviour {
                         if (playerOne.getPoints() >= 3)
                         {
                             //End game
+                            winnerOne = true;
+                            Application.LoadLevel(2);
                             Debug.Log("Player one has won.");
                         }
                     }
@@ -273,6 +279,8 @@ public class Game_Setup : MonoBehaviour {
                         if (playerTwo.getPoints() >= 3)
                         {
                             //End game
+                            winnerOne = false;
+                            Application.LoadLevel(2);
                             Debug.Log("Player two has won.");
                         }
                     }
