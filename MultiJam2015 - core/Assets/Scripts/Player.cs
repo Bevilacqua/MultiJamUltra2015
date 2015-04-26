@@ -59,7 +59,7 @@ public class Player : MonoBehaviour {
 
     public void resetPlayer()
     {
-        this.color = Game_Setup.colors[Random.Range(0, 5)];
+        this.color = Game_Setup.colors[Random.Range(0, Game_Setup.colors.Length)];
         this.position = 2;
         this.locationChosen = false;
     }

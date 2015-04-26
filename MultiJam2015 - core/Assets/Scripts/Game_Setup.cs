@@ -153,8 +153,7 @@ public class Game_Setup : MonoBehaviour {
                     {
                         if (nodes[i, playerOne.getPosition()].GetComponent<SpriteRenderer>().color.r != playerOne.getColor().r || nodes[i, playerOne.getPosition()].GetComponent<SpriteRenderer>().color.g != playerOne.getColor().g || nodes[i, playerOne.getPosition()].GetComponent<SpriteRenderer>().color.b != playerOne.getColor().b)
                         {
-                            playerOne.setChosen(false);
-                            return;
+                            break;
                         }
                         Debug.Log("Row to p1");
                         //Add point P1
@@ -257,8 +256,7 @@ public class Game_Setup : MonoBehaviour {
                     {
                         if (nodes[i, playerTwo.getPosition()].GetComponent<SpriteRenderer>().color.r != playerTwo.getColor().r || nodes[i, playerTwo.getPosition()].GetComponent<SpriteRenderer>().color.g != playerTwo.getColor().g || nodes[i, playerTwo.getPosition()].GetComponent<SpriteRenderer>().color.b != playerTwo.getColor().b)
                         {
-                            playerTwo.setChosen(false);
-                            return;
+                            break;
                         }
                         Debug.Log("Row to p2");
                         //Add point P2
