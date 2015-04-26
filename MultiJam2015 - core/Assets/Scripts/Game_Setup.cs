@@ -23,6 +23,7 @@ public class Game_Setup : MonoBehaviour {
     public static Color yellow = Color.yellow;
     public static Color cyan = Color.cyan;
     public static Color inactive = new Color(Color.white.r, Color.white.g, Color.white.b, .25f);
+    public static Color completed = new Color(Color.gray.r, Color.gray.g, Color.gray.b, .40f);
     public static Color unplaced = Color.white;
 
     public static  Color[] colors; 
@@ -98,12 +99,12 @@ public class Game_Setup : MonoBehaviour {
 
             if (playerOne.getChosen())
             {
-                for (int i = 5; i > 1; i--)
+                for (int i = 5; i >= 1; i--)
                 {
                     GameBlock node = nodes[i, playerOne.getPosition()].GetComponent<GameBlock>(); 
                     
                     //Algorithm step2                                                                                                                                                                                                                                                                                                                                                                                                           //Algorithm step 2
-                    if(node.getColor() == unplaced)
+                    if(node.getColor() == unplaced && i > 1)
                     {
                         node.setColor(nodes[0, playerOne.getPosition()].GetComponent<SpriteRenderer>().color); //3
                         GameBlock opponentNode = nodes[12 - i, playerOne.getPosition()].GetComponent<GameBlock>();
@@ -118,16 +119,15 @@ public class Game_Setup : MonoBehaviour {
                             Color colorTwo = node.getColor();
                             for (int w = 10; w >= 7; w--)
                             {
+                                if (w == 12 - i)
+                                    break;
                                 if (nodes[w, playerOne.getPosition()].GetComponent<GameBlock>().getColor() != unplaced) //1
                                 {
-                                    Debug.Log(w);
                                     colorOne = nodes[w, playerOne.getPosition()].GetComponent<GameBlock>().getColor(); //2
                                     nodes[w, playerOne.getPosition()].GetComponent<GameBlock>().setColor(unplaced);
 
-                                    for (int z = w - 1; z >= 7; z--) //3
+                                    for (int z = w - 1; z >= 12 - i; z--) //3
                                     {
-                                        Debug.Log(z);
-
                                         if (nodes[z, playerOne.getPosition()].GetComponent<GameBlock>().getColor() == unplaced) //4
                                         {
                                             nodes[z, playerOne.getPosition()].GetComponent<GameBlock>().setColor(colorOne);
@@ -148,6 +148,36 @@ public class Game_Setup : MonoBehaviour {
 
                         }
                         break;
+                    }
+                    else if(nodes[i, playerOne.getPosition()].GetComponent<SpriteRenderer>().color.a == .25f && i == 1) //2.5
+                    {
+                        if (nodes[i, playerOne.getPosition()].GetComponent<SpriteRenderer>().color.r != playerOne.getColor().r || nodes[i, playerOne.getPosition()].GetComponent<SpriteRenderer>().color.g != playerOne.getColor().g || nodes[i, playerOne.getPosition()].GetComponent<SpriteRenderer>().color.b != playerOne.getColor().b)
+                        {
+                            playerOne.setChosen(false);
+                            return;
+                        }
+                        Debug.Log("Row to p1");
+                        //Add point P1
+                        playerOne.addPoint();
+
+                        //Grey out whole row (completed color)
+                        for (int x = 1; x <= 11; x++)
+                        {
+                            if (x == 6) continue;
+                            nodes[x, playerOne.getPosition()].GetComponent<GameBlock>().setColor(completed);
+                        }
+
+                        //2.5.a
+                        if (playerOne.getPoints() >= 3)
+                        {
+                            //End game
+                            Debug.Log("Player one has won.");
+                        }
+                    }
+                    else if(node.getColor() == completed && i == 1)
+                    {
+                        playerOne.setChosen(false);
+                        return;
                     }
 
                 }
@@ -174,12 +204,12 @@ public class Game_Setup : MonoBehaviour {
 
             if (playerTwo.getChosen())
             {
-                for (int i = 7; i < 11; i++)
+                for (int i = 7; i <= 11; i++)
                 {
                     GameBlock node = nodes[i, playerTwo.getPosition()].GetComponent<GameBlock>();
 
                     //Algorithm step2                                                                                                                                                                                                                                                                                                                                                                                                           //Algorithm step 2
-                    if (node.getColor() == unplaced)
+                    if (node.getColor() == unplaced && i < 11)
                     {
                         node.setColor(nodes[12, playerTwo.getPosition()].GetComponent<SpriteRenderer>().color); //3
                         GameBlock opponentNode = nodes[12 - i, playerTwo.getPosition()].GetComponent<GameBlock>();
@@ -194,16 +224,15 @@ public class Game_Setup : MonoBehaviour {
                             Color colorTwo = node.getColor();
                             for (int w = 2; w <= 5; w++)
                             {
+                                if (w == 12 - i)
+                                    break;
                                 if (nodes[w, playerTwo.getPosition()].GetComponent<GameBlock>().getColor() != unplaced) //1
                                 {
-                                    Debug.Log(w);
                                     colorOne = nodes[w, playerTwo.getPosition()].GetComponent<GameBlock>().getColor(); //2
                                     nodes[w, playerTwo.getPosition()].GetComponent<GameBlock>().setColor(unplaced);
 
-                                    for (int z = w + 1; z <= 5; z++) //3
+                                    for (int z = w + 1; z <= 12 - i; z++) //3
                                     {
-                                        Debug.Log(z);
-
                                         if (nodes[z, playerTwo.getPosition()].GetComponent<GameBlock>().getColor() == unplaced) //4
                                         {
                                             nodes[z, playerTwo.getPosition()].GetComponent<GameBlock>().setColor(colorOne);
@@ -223,6 +252,36 @@ public class Game_Setup : MonoBehaviour {
                             ///
                         }
                         break;
+                    }
+                    else if (nodes[i, playerTwo.getPosition()].GetComponent<SpriteRenderer>().color.a == .25f && i == 11) //2.5
+                    {
+                        if (nodes[i, playerTwo.getPosition()].GetComponent<SpriteRenderer>().color.r != playerTwo.getColor().r || nodes[i, playerTwo.getPosition()].GetComponent<SpriteRenderer>().color.g != playerTwo.getColor().g || nodes[i, playerTwo.getPosition()].GetComponent<SpriteRenderer>().color.b != playerTwo.getColor().b)
+                        {
+                            playerTwo.setChosen(false);
+                            return;
+                        }
+                        Debug.Log("Row to p2");
+                        //Add point P2
+                        playerTwo.addPoint();
+
+                        //Grey out whole row (completed color)
+                        for (int x = 1; x <= 11; x++)
+                        {
+                            if (x == 6) continue;
+                            nodes[x, playerTwo.getPosition()].GetComponent<GameBlock>().setColor(completed);
+                        }
+
+                        //2.5.a
+                        if (playerTwo.getPoints() >= 3)
+                        {
+                            //End game
+                            Debug.Log("Player two has won.");
+                        }
+                    }
+                    else if (node.getColor() == completed && i == 11)
+                    {
+                        playerTwo.setChosen(false);
+                        return;
                     }
 
                 }

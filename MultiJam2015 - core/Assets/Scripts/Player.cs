@@ -9,13 +9,14 @@ public class Player : MonoBehaviour {
     private bool locationChosen = false;
 
     private Color color;
+    private int points;
 
     public KeyCode up;
     public KeyCode down;
     public KeyCode shoot;
 
     void Start () {
-
+        points = 0;
 	}
 
 	void Update () {
@@ -51,6 +52,11 @@ public class Player : MonoBehaviour {
         return this.locationChosen;
     }
 
+    public void setChosen(bool chosen)
+    {
+        this.locationChosen = chosen;
+    }
+
     public void resetPlayer()
     {
         this.color = Game_Setup.colors[Random.Range(0, 5)];
@@ -71,5 +77,15 @@ public class Player : MonoBehaviour {
     public void setColor(Color color)
     {
         this.color = color;
+    }
+
+    public void addPoint()
+    {
+        this.points++;
+    }
+
+    public int getPoints()
+    {
+        return this.points;
     }
 }
