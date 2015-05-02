@@ -28,10 +28,11 @@ public class Game_Setup : MonoBehaviour {
     public static Color completed = new Color(Color.gray.r, Color.gray.g, Color.gray.b, .40f);
     public static Color unplaced = Color.white;
 
-    public static  Color[] colors; 
+    public static Color[] colors;
 
 	void Start () {
         colors = new Color[] { red, green, blue, yellow, cyan };
+
         camera = Camera.main;
 
         playerOne = GameObject.Find("PlayerOne").GetComponent<Player>();
@@ -60,7 +61,6 @@ public class Game_Setup : MonoBehaviour {
                 {
                     nodes[x, y] = (GameObject)Instantiate(pre_FinishLine, camera.ScreenToWorldPoint(new Vector3(cellWidth * x + cellWidth - (cellWidth / 2), (rowHeight * y) + rowHeight - (rowHeight / 2), 1)), pre_CenterBlock.transform.localRotation);
                     nodes[x, y].GetComponent<PlayerBlock>().setPosition(y);
-                    Debug.Log(y);
                     continue;
                 }
                 GameObject node = (GameObject) Instantiate(pre_Node, camera.ScreenToWorldPoint(new Vector3(cellWidth * x + cellWidth - (cellWidth / 2), (rowHeight * y) + rowHeight - (rowHeight / 2), 1)), pre_Node.transform.localRotation);

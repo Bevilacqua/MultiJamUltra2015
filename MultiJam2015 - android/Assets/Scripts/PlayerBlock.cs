@@ -2,34 +2,38 @@
 using System.Collections;
 
 public class PlayerBlock : MonoBehaviour {
-    private bool isPlayerOne;
-    public int position;
+    private int position;
+    private Player player;
+    public bool playerDefined = false;
 
-	// Use this for initialization
 	void Start () {
-        if (Camera.main.WorldToScreenPoint(gameObject.transform.position).x < (Camera.main.pixelWidth / 2)) isPlayerOne = true;
-        else isPlayerOne = false;
+        
 	}
 	
-	// Update is called once per frame
 	void Update () {
+        if(!playerDefined)
+        {
+            if (Camera.main.WorldToScreenPoint(gameObject.transform.position).x < (Camera.main.pixelWidth / 2))
+            {
+                player = GameObject.Find("PlayerOne").GetComponent<Player>();
+            }
+            else
+            {
+                player = GameObject.Find("PlayerTwo").GetComponent<Player>();
+            }
+
+            playerDefined = true;
+        }
 	}
 
     public void OnTouched() {
-        if(isPlayerOne)
+        if(playerDefined)
         {
-            if (GameObject.Find("PlayerOne").GetComponent<Player>().getTurn())
+            if(player.getTurn())
             {
-                GameObject.Find("PlayerOne").GetComponent<Player>().setPosition(position);
-                GameObject.Find("PlayerOne").GetComponent<Player>().setChosen(true);
-            }
-        }
-        else
-        {
-            if (GameObject.Find("PlayerTwo").GetComponent<Player>().getTurn())
-            {
-                GameObject.Find("PlayerTwo").GetComponent<Player>().setPosition(position);
-                GameObject.Find("PlayerTwo").GetComponent<Player>().setChosen(true);
+                Debug.Log(this.position);
+                player.setPosition(this.position);
+                player.setChosen(true);
             }
         }
     }
@@ -38,6 +42,7 @@ public class PlayerBlock : MonoBehaviour {
     public void setPosition(int position)
     {
         this.position = position;
+        Debug.Log(position);
     }
 
 }
